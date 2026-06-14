@@ -1,11 +1,11 @@
 { stdenv, lib, makeWrapper,
 bashInteractive, httpie, jq, htmlq, ripgrep, which, gnused,
-coreutils, python3Packages, parallel, fzf, xdg-utils
+coreutils, python3Packages, parallel, fzf, xdg-utils, zx
 }:
 
 stdenv.mkDerivation rec {
   pname = "utils";
-  version = "0.1";
+  version = "0.1.1";
 
   buildInputs = [
     bashInteractive
@@ -21,6 +21,7 @@ stdenv.mkDerivation rec {
     parallel
     fzf
     xdg-utils
+    zx
   ];
 
   nativeBuildInputs = [
