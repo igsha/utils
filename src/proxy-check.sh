@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -e
+set -eo pipefail
+shopt -s lastpipe
 
 which http parallel >/dev/null
 
