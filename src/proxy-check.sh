@@ -2,7 +2,7 @@
 set -eo pipefail
 shopt -s lastpipe
 
-which http parallel >/dev/null
+which http parallel nc >/dev/null
 
 CHECKSITE="aHR0cHM6Ly95b3V0dWJlLmNvbQo="
 <<< "$CHECKSITE" base64 -d \
@@ -11,8 +11,14 @@ CHECKSITE="aHR0cHM6Ly95b3V0dWJlLmNvbQo="
 echo "Check proxies against $CHECKSITE" >&2
 checker() {
     <<< "$@" read -r ADDR DESC
-    if ALL_PROXY="$ADDR" http --timeout 4 --ignore-stdin -F GET "$CHECKSITE" &>/dev/null; then
-        echo "Workable proxy[$DESC]: $ADDR"
+    [[ "$ADDR" =~ [^:]+://([^:]+):([0-9]+) ]]
+    IP="${BASH_REMATCH[1]}"
+    PORT="${BASH_REMATCH[2]}"
+    if nc -w5 -z "$IP" "$PORT" 2>/dev/null; then
+        echo "Available proxy[$DESC]: $ADDR"
+        if ALL_PROXY="$ADDR" http --timeout 60 --ignore-stdin -F GET "$CHECKSITE" &>/dev/null; then
+            echo "Workable proxy[$DESC]: $ADDR"
+        fi
     fi
 }
 
