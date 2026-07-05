@@ -4,10 +4,7 @@ shopt -s lastpipe
 
 which http parallel nc >/dev/null
 
-CHECKSITE="aHR0cHM6Ly95b3V0dWJlLmNvbQo="
-<<< "$CHECKSITE" base64 -d \
-    | read -r CHECKSITE
-
+CHECKSITE=${1:-https://bbc.com}
 echo "Check proxies against $CHECKSITE" >&2
 checker() {
     <<< "$@" read -r ADDR DESC
