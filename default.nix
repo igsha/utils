@@ -5,7 +5,7 @@ coreutils, python3Packages, parallel, fzf, xdg-utils, zx, netcat
 
 stdenv.mkDerivation rec {
   pname = "utils";
-  version = "0.1.2";
+  version = "0.1.3";
 
   buildInputs = [
     bashInteractive
