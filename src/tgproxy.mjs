@@ -26,13 +26,14 @@ const json = JSON.parse(new TextDecoder().decode(decryptedBuffer));
 const items = json.map(function(item) {
     const datetime = new Date(item.addTime * 1000);
     const datetimeInLocalTimezone = new Date(datetime - datetime.getTimezoneOffset() * 60000).toISOString().slice(0, -1);
-    return `${item.country} ${datetimeInLocalTimezone} tg://proxy?server=${item.host}&port=${item.port}&secret=${item.secret}`;
+    return `tg://proxy?server=${item.host}&port=${item.port}&secret=${item.secret} ${item.country} ${datetimeInLocalTimezone}`;
 });
 
 const text = items.join("\n");
 
-if (argv.s || argv.select) {
-    const program = $`fzf --accept-nth 3`;
+const argv = process.argv.slice(2);
+if (argv[1] == "-s" || argv[1] == "--select") {
+    const program = $`fzf --accept-nth 1`;
     program.stdin.write(text);
     program.stdin.end();
     const selectedValue = await program;
