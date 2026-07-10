@@ -4,7 +4,7 @@ shopt -s lastpipe
 
 which fzf xdg-open >/dev/null
 
-fzf --accept-nth 1 --bind 'ctrl-x:execute(xdg-open {1}),enter:accept' \
+fzf --sync --accept-nth 1 --bind 'ctrl-x:execute(xdg-open {1}),enter:accept' \
     | read -r URL
 
 if [[ -n "$URL" ]]; then
